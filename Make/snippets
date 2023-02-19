@@ -1,0 +1,43 @@
+- Docker-compose
+
+	SHELL := /bin/bash
+	PROJECT_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
+
+	PWD=`pwd`
+	project := $(shell basename $$PWD)
+
+	AWS_DEFAULT_REGION='eu-west-1'
+
+	build:
+		docker-compose --file ./docker/docker-compose.yml --name $(PROJECT_DIR) build
+
+	build-force:
+		docker-compose --file ./docker/docker-compose.yml build --no-cache
+
+	run:
+		docker-compose --file ./docker/docker-compose.yml up -d	
+		
+	creds:
+		docker cp ~/.aws docker_app_1:/.aws/
+
+	test:
+		coverage run -m --source prediction pytest ./tests/ -v -s && coverage report -m
+		
+
+	host-unittest-tox:
+		source ci/github.sh && docker-compose --file ./docker/docker-compose.yml run --entrypoint "" app bash -c "cd ~/$(project) && tox -e py39"
+
+	host-unittest-pytest:
+		source ci/github.sh && docker-compose --file ./docker/docker-compose.yml run --entrypoint "" app bash -c "cd ~/$(project) && pytest ./tests/"
+
+	container-unittest:
+		cd ~/des-prediction && tox -e py39
+
+	format:
+		black ./ && \
+		autopep8 ./ -r --in-place --max-line-length 120 -a
+
+- Copy aws credentials into container
+
+	creds:
+		docker cp ~/.aws docker_app_1:/.aws/

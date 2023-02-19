@@ -1,0 +1,20 @@
+- Read parquet
+
+    import awswrangler as wr
+
+    df_full_thinfile = wr.s3.read_parquet("s3://data-scoring-ml-jumo-world/mtn_ug/features/portfolio_thickfile_v0.10/", dataset=True)
+
+- Safe read parquet
+
+    import awswrangler as wr
+
+    partitions = wr.s3.list_directories(f'{parquet_uri}')
+
+    dfs = []
+    fails = []
+    for part in partitions:
+        try:
+            x = wr.s3.read_parquet(part, dataset=True)
+            dfs.append(x)
+        except:
+            fails.append(part)

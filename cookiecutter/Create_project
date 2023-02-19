@@ -1,0 +1,3 @@
+- Create Jupyter project
+
+cookiecutter --checkout jupyter_project git+ssh://git@github.com/{user}/ds-cookiecutters.git --directory="{template_folder}"
