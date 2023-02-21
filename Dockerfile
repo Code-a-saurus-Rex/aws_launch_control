@@ -4,7 +4,7 @@ FROM ubuntu:latest
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV PACKAGE=Code-a-saurus-Rex/aws_launch_control
-ENV VERSION=develop_v1
+ENV VERSION=master
 ARG GITHUB_PAT
 
 RUN apt-get update \
