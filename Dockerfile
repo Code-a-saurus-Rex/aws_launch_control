@@ -3,7 +3,7 @@
 FROM ubuntu:latest
 
 ENV DEBIAN_FRONTEND=noninteractive
-ENV PACKAGE=jumo/des-launch-control
+ENV PACKAGE=Code-a-saurus-Rex/aws_launch_control
 ENV VERSION=develop_v1
 ARG GITHUB_PAT
 
